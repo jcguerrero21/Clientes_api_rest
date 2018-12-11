@@ -8,12 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
+//import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -39,17 +40,18 @@ public class Cliente implements Serializable {
 	
 	@NotEmpty(message = "No puede estar vacío")
 	@Email(message = "No es una dirección de correo bien formada")
-	@Column(name="email", nullable=false, unique=true)
+	@Column(name="email", nullable=false, unique=false)
 	private String email;
 	
+	@NotNull(message="no puede estar vacio")
 	@Column(name="create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 	
-	@PrePersist //Con esta anotación hacemos que antes de que se cree el objeto nos inicialice las variables a lo que nosotros queramos 
-	public void prePersist() {
-		createAt = new Date();
-	}
+//	@PrePersist //Con esta anotación hacemos que antes de que se cree el objeto nos inicialice las variables a lo que nosotros queramos 
+//	public void prePersist() {
+//		createAt = new Date();
+//	}
 	
 	public Long getId() {
 		return id;
