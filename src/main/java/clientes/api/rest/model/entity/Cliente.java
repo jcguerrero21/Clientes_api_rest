@@ -17,42 +17,43 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 @Entity
 @Table(name = "clientes")
 public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotEmpty(message = "No puede estar vacío")
-	@Size(min=4, max=25, message = "El tamaño debe estar entre 4 y 25 caracteres")
-	@Column(name="nombre", nullable=false)
+	@Size(min = 4, max = 25, message = "El tamaño debe estar entre 4 y 25 caracteres")
+	@Column(name = "nombre", nullable = false)
 	private String nombre;
-	
+
 	@NotEmpty(message = "No puede estar vacío")
-	@Size(min=4, message = "El tamaño debe ser de al menos 4 caracteres")
-	@Column(name="apellido")
+	@Size(min = 4, message = "El tamaño debe ser de al menos 4 caracteres")
+	@Column(name = "apellido")
 	private String apellido;
-	
+
 	@NotEmpty(message = "No puede estar vacío")
 	@Email(message = "No es una dirección de correo bien formada")
-	@Column(name="email", nullable=false, unique=false)
+	@Column(name = "email", nullable = false, unique = false)
 	private String email;
-	
-	@NotNull(message="no puede estar vacio")
-	@Column(name="create_at")
+
+	@NotNull(message = "no puede estar vacio")
+	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
-	
+
+	private String foto;
+
 //	@PrePersist //Con esta anotación hacemos que antes de que se cree el objeto nos inicialice las variables a lo que nosotros queramos 
 //	public void prePersist() {
 //		createAt = new Date();
 //	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -93,5 +94,12 @@ public class Cliente implements Serializable {
 		this.createAt = createAt;
 	}
 
-	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
 }
