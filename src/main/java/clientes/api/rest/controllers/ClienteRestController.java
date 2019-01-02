@@ -1,10 +1,15 @@
 package clientes.api.rest.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -13,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,10 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import clientes.api.rest.model.entity.Cliente;
-import clientes.api.rest.model.entity.Region;
 import clientes.api.rest.model.services.IClienteService;
-import clientes.api.rest.model.services.IUploadFileService;
-
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
@@ -46,9 +49,6 @@ public class ClienteRestController {
 
 	@Autowired
 	private IClienteService clienteService;
-	
-	@Autowired
-	private IUploadFileService uploadFileService;
 	
 	private final Logger log = LoggerFactory.getLogger(ClienteRestController.class);
 	
@@ -153,8 +153,7 @@ public class ClienteRestController {
 			clienteActual.setNombre(cliente.getNombre());
 			clienteActual.setEmail(cliente.getEmail());
 			clienteActual.setCreateAt(cliente.getCreateAt());
-			clienteActual.setRegion(cliente.getRegion());
-			
+
 			clienteActualizado = clienteService.save(clienteActual);
 		} catch (DataAccessException ex) {
 			response.put("mensaje", "Error al actualizar el cliente en la base de datos");
@@ -169,25 +168,31 @@ public class ClienteRestController {
 
 	@DeleteMapping("/clientes/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
-		
+
 		Map<String, Object> response = new HashMap<>();
-		
+
 		try {
 			Cliente cliente = clienteService.findById(id);
 			String nombreFotoAnterior = cliente.getFoto();
-			
-			uploadFileService.eliminar(nombreFotoAnterior);
-			
-		    clienteService.delete(id);
-		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al eliminar el cliente de la base de datos");
-			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+
+			if (nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
+				Path rutaFotoAnterior = Paths.get("/opt/").resolve(nombreFotoAnterior).toAbsolutePath();
+				File archivoFotoAnterior = rutaFotoAnterior.toFile();
+				if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+					archivoFotoAnterior.delete();
+				}
+			}
+
+			clienteService.delete(id);
+		} catch (DataAccessException ex) {
+			response.put("mensaje", "Error al eliminar el cliente en la base de datos");
+			response.put("error", ex.getMessage().concat(": ").concat(ex.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		response.put("mensaje", "El cliente eliminado con éxito!");
-		
+
+		response.put("mensaje", "cliente eliminado con éxito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+
 	}
 
 	@PostMapping("/clientes/upload")
@@ -197,19 +202,27 @@ public class ClienteRestController {
 		Cliente cliente = clienteService.findById(id);
 
 		if (!archivo.isEmpty()) {
-			
-			String nombreArchivo = null;
+			String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename().replace(" ", "");
+
+			Path rutaArchivo = Paths.get("/opt/").resolve(nombreArchivo).toAbsolutePath();
+			log.info(rutaArchivo.toString());
 			try {
-				nombreArchivo = uploadFileService.copiar(archivo);
+				Files.copy(archivo.getInputStream(), rutaArchivo);
 			} catch (IOException ex) {
-				response.put("mensaje", "Error al subir la imagen del cliente");
-				response.put("error", ex.getMessage().concat(": ").concat(ex.getCause().getMessage()));
+				response.put("mensaje", "Error al subir la imagen del cliente " + nombreArchivo);
+				response.put("mensaje", ex.getMessage().concat(": ").concat(ex.getCause().getMessage()));
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			
+
 			String nombreFotoAnterior = cliente.getFoto();
-			
-			uploadFileService.eliminar(nombreFotoAnterior);
+
+			if (nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
+				Path rutaFotoAnterior = Paths.get("/opt/").resolve(nombreFotoAnterior).toAbsolutePath();
+				File archivoFotoAnterior = rutaFotoAnterior.toFile();
+				if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+					archivoFotoAnterior.delete();
+				}
+			}
 
 			cliente.setFoto(nombreArchivo);
 
@@ -225,23 +238,23 @@ public class ClienteRestController {
 	@GetMapping("/uploads/img/{nombreFoto:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
 
+		Path rutaArchivo = Paths.get("/opt/").resolve(nombreFoto).toAbsolutePath();
+		log.info(rutaArchivo.toString());
 		Resource recurso = null;
-		
+
 		try {
-			recurso = uploadFileService.cargar(nombreFoto);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			recurso = new UrlResource(rutaArchivo.toUri());
+		} catch (MalformedURLException ex) {
+			ex.printStackTrace();
 		}
-		
+
+		if (!recurso.exists() && !recurso.isReadable()) {
+			throw new RuntimeException("Error no se pudo cargar la imagen: " + nombreFoto);
+		}
 		HttpHeaders cabecera = new HttpHeaders();
 		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
 		
 		return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
-	}
-	
-	@GetMapping("/clientes/regiones")
-	public List<Region> listarRegiones(){
-		return clienteService.findAllRegiones();
 	}
 
 }
