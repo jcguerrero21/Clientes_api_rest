@@ -46,33 +46,15 @@ INSERT INTO productos (nombre, precio, create_at) VALUES('Armario Gürkenhansen'
 /* Creamos algunas facturas */
 INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) VALUES('Facturs equipos de oficina', null, 1, NOW());
 INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 1);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(2, 1, 4);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 5);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 7);
+INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(2, 1, 1);
+INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 1);
+INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 1);
 
 INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) VALUES('Facturs 2', null, 1, NOW());
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 1);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(2, 1, 4);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 5);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 7);
-
-INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) VALUES('Facturs 3', null, 1, NOW());
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 1);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(2, 1, 4);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 5);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 7);
-
-INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) VALUES('Facturs 4', null, 1, NOW());
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 1);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(2, 1, 4);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 5);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 7);
-
-INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) VALUES('Facturs 5', null, 1, NOW());
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 1);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(2, 1, 4);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 5);
-INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 7);
+INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 2);
+INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(2, 1, 2);
+INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 2);
+INSERT INTO facturas_items (cantidad, producto_id, factura_id) VALUES(1, 1, 2);
 
 
 

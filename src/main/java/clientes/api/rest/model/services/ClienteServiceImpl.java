@@ -2,6 +2,8 @@ package clientes.api.rest.model.services;
 
 import java.util.List;
 
+import clientes.api.rest.model.dao.IFacturaDAO;
+import clientes.api.rest.model.entity.Factura;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +19,10 @@ public class ClienteServiceImpl implements IClienteService {
 		
 	@Autowired
 	private IClienteDAO clienteDao;
-	
+
+	@Autowired
+	private IFacturaDAO facturaDAO;
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Cliente> findAll() {
@@ -52,6 +57,24 @@ public class ClienteServiceImpl implements IClienteService {
 	@Transactional(readOnly = true)
 	public List<Region> findAllRegiones() {
 		return clienteDao.findAllRegiones();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Factura findFacturaById(Long id) {
+		return facturaDAO.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public Factura saveFactura(Factura factura) {
+		return facturaDAO.save(factura);
+	}
+
+	@Override
+	@Transactional
+	public void deleteFacturaById(Long id) {
+		facturaDAO.deleteById(id);
 	}
 
 }
