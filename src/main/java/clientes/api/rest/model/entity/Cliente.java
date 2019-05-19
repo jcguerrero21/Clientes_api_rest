@@ -63,7 +63,8 @@ public class Cliente implements Serializable {
 	@JoinColumn(name="region_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Region region;
-	
+
+	@JsonIgnoreProperties({"cliente", "hibernateLazyInitializer", "handler"}) //para no entrar en loop infinito al hacer la request en postman
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="cliente", cascade=CascadeType.ALL)
 	private List<Factura> facturas;
 	

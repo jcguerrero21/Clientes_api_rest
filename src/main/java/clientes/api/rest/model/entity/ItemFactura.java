@@ -1,12 +1,10 @@
 package clientes.api.rest.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="facturas_items")
@@ -19,6 +17,11 @@ public class ItemFactura implements Serializable {
 	private Long id;
 	
 	private Integer cantidad;
+
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToOne(fetch = FetchType.LAZY) //muchos facturas_item pueden tener un solo producto
+	@JoinColumn(name="producto_id") //lo podriamos quitar porque lo genera automáticamente
+	private Producto producto;
 
 	public Long getId() {
 		return id;
@@ -36,8 +39,8 @@ public class ItemFactura implements Serializable {
 		this.cantidad = cantidad;
 	}
 	
-	public Double calcularImporte() {
-		return cantidad.doubleValue();
+	public Double getImporte() {
+		return cantidad.doubleValue()*producto.getPrecio();
 	}
 
 }
