@@ -1,8 +1,9 @@
-package clientes.api.rest.model.services;
+package clientes.api.rest.model.services.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import clientes.api.rest.model.services.IUsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import clientes.api.rest.model.dao.IUsuarioDAO;
 import clientes.api.rest.model.entity.Usuario;
 
 @Service
-public class UsuarioService implements IUsuarioService ,UserDetailsService {
+public class UsuarioService implements IUsuarioService,UserDetailsService {
 	
 	private Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 	
