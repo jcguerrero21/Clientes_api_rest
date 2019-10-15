@@ -3,7 +3,9 @@ package clientes.api.rest.model.services.impl;
 import java.util.List;
 
 import clientes.api.rest.model.dao.IFacturaDAO;
+import clientes.api.rest.model.dao.IProductoDAO;
 import clientes.api.rest.model.entity.Factura;
+import clientes.api.rest.model.entity.Producto;
 import clientes.api.rest.model.services.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +25,10 @@ public class ClienteServiceImpl implements IClienteService {
 
 	@Autowired
 	private IFacturaDAO facturaDAO;
-
+	
+	@Autowired
+	private IProductoDAO productoDAO;
+	
 	@Override
 	@Transactional(readOnly = true)
 	public List<Cliente> findAll() {
@@ -76,6 +81,12 @@ public class ClienteServiceImpl implements IClienteService {
 	@Transactional
 	public void deleteFacturaById(Long id) {
 		facturaDAO.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Producto> findProductoByNombre(String termino) {
+		return productoDAO.findByNombreContainingIgnoreCase(termino);
 	}
 
 }

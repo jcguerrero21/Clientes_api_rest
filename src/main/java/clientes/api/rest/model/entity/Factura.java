@@ -1,7 +1,6 @@
 package clientes.api.rest.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.beans.FatalBeanException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class Factura implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
-    @JsonIgnoreProperties({"facturas", "hibernateLazyInitializer", "handler"}) //para no entrar en loop infinito al hacer la request en postman
+    @JsonIgnoreProperties(value={"facturas", "hibernateLazyInitializer", "handler"}, allowSetters=true) //para no entrar en loop infinito al hacer la request en postman
     @ManyToOne(fetch = FetchType.LAZY)
     //	@JoinColumn(name="cliente_id") //Al tener el mappedBy en cliente no sería necesario pero podriamos ponerlo
     private Cliente cliente;
