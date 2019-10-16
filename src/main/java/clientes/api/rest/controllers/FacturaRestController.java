@@ -19,7 +19,7 @@ import clientes.api.rest.model.entity.Factura;
 import clientes.api.rest.model.entity.Producto;
 import clientes.api.rest.model.services.IClienteService;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "*"})
 @RestController
 @RequestMapping("/api")
 public class FacturaRestController {
