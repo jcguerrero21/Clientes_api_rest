@@ -1,16 +1,15 @@
 /*Populate tabla clientes*/
-INSERT INTO regiones (id, nombre) VALUES (1, 'Sudamérica');
-INSERT INTO regiones (id, nombre) VALUES (2, 'Centroamérica');
-INSERT INTO regiones (id, nombre) VALUES (3, 'Norteamérica');
+INSERT INTO regiones (id, nombre) VALUES (1, 'SudamÃ©rica');
+INSERT INTO regiones (id, nombre) VALUES (2, 'CentroamÃ©rica');
+INSERT INTO regiones (id, nombre) VALUES (3, 'NorteamÃ©rica');
 INSERT INTO regiones (id, nombre) VALUES (4, 'Europa');
 INSERT INTO regiones (id, nombre) VALUES (5, 'Asia');
 INSERT INTO regiones (id, nombre) VALUES (6, 'Africa');
-INSERT INTO regiones (id, nombre) VALUES (7, 'Oceanía');
-INSERT INTO regiones (id, nombre) VALUES (8, 'Antártida');
+INSERT INTO regiones (id, nombre) VALUES (7, 'OceanÃ­a');
+INSERT INTO regiones (id, nombre) VALUES (8, 'AntÃ¡rtida');
 
 INSERT INTO clientes (region_id,nombre,apellido, email,create_at) values (4, 'Carlos', 'Moyano', 'CarlosMoyano@jc.com', '2017-12-29');
 INSERT INTO clientes (region_id,nombre,apellido, email,create_at) values (4, 'Juan', 'Guerrero', 'juanGuerrero@jc.com', '2017-12-29');
-INSERT INTO clientes (region_id,nombre,apellido, email, create_at) VALUES(2, 'Andrés', 'Guzmán', 'profesor@bolsadeideas.com', '2018-01-01');
 INSERT INTO clientes (region_id,nombre,apellido, email, create_at) VALUES(3, 'Mr. John', 'Doe', 'john.doe@gmail.com', '2018-01-02');
 INSERT INTO clientes (region_id,nombre,apellido, email, create_at) VALUES(4, 'Linus', 'Torvalds', 'linus.torvalds@gmail.com', '2018-01-03');
 INSERT INTO clientes (region_id,nombre,apellido, email, create_at) VALUES(1, 'Rasmus', 'Lerdorf', 'rasmus.lerdorf@gmail.com', '2018-01-04');
@@ -41,7 +40,7 @@ INSERT INTO productos (nombre, precio, create_at) VALUES('Canon EOS 1300D', 1300
 INSERT INTO productos (nombre, precio, create_at) VALUES('Apple iPhone X', 459990, NOW());
 INSERT INTO productos (nombre, precio, create_at) VALUES('HP Notebook', 1159990, NOW());
 INSERT INTO productos (nombre, precio, create_at) VALUES('XIAOMI Scooter', 159990, NOW());
-INSERT INTO productos (nombre, precio, create_at) VALUES('Armario Gürkenhansen', 59990, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Armario Gï¿½rkenhansen', 59990, NOW());
 
 /* Creamos algunas facturas */
 INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) VALUES('Facturs equipos de oficina', null, 1, NOW());
